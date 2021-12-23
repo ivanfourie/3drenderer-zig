@@ -1,0 +1,5 @@
+# no binaries
+bin
+
+# ignore IDE for now
+.vscode

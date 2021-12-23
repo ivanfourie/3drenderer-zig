@@ -38,10 +38,52 @@ bool initialize_window(void) {
     return true;
 }
 
-int main(void) {
+void setup(void) {
+    // TODO:
+}
+
+
+void process_input(void) {
+    SDL_Event event;
+    SDL_PollEvent(&event);
+
+    switch (event.type) {
+        case SDL_QUIT: 
+            is_running = false;
+            break;
+        case SDL_KEYDOWN:
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+                is_running = false;
+            break;
+    }
+}
+
+void update(void) {
+    // TODO:
+}
+
+void render(void) {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    // ...
+
+    SDL_RenderPresent(renderer);
+}
+
+int main(int argc, char* args[]) {
     
-    /* Create a SDL window */
+    // Create a SDL window
     is_running = initialize_window();
+
+    setup();
+
+    // Event loop
+    while (is_running) {
+        process_input();
+        update();
+        render();
+    }
 
     return 0;
 }
