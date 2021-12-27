@@ -98,10 +98,19 @@ void draw_grid(void) {
     int grid_size = 10;
     uint32_t grid_color = 0xFF333333;
 
-    for (int y = 0; y < window_height; y++) {
-        for (int x = 0; x < window_width; x++) {
-            if ((x % grid_size == 0) || (y % grid_size == 0))
-                color_buffer[(window_width * y) + x] = grid_color;
+    for (int y = 0; y < window_height; y+=grid_size) {
+        for (int x = 0; x < window_width; x+=grid_size) {
+            color_buffer[(window_width * y) + x] = grid_color;
+        }
+    }
+}
+
+void draw_rect(int x, int y, int width, int height, uint32_t color) {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            int current_x = x + i;
+            int current_y = y + j;
+            color_buffer[(window_width * current_y) + current_x] = color;
         }
     }
 }
@@ -129,6 +138,7 @@ void render(void) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
+    draw_rect(300, 400, 350, 250, 0xFFFF00FF);
     draw_grid();
     
     render_color_buffer();
