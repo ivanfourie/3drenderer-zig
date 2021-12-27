@@ -27,8 +27,6 @@ bool initialize_window(void) {
 
     window_width = display_mode.w;
     window_height = display_mode.h;
-    printf("Window width: %d\n", window_width);
-    printf("Window height: %d\n", window_height);
 
     // Create a SDL Window
     window = SDL_CreateWindow(
@@ -53,7 +51,7 @@ bool initialize_window(void) {
         return false;
     }
 
-    // Crashes on WSL :()
+    // Crashes on WSL :(
     // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
@@ -63,7 +61,7 @@ void setup(void) {
     // Allocate the required memory in bytes for the color buffer
     color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
 
-    // Creating a SDL texture that is usde to display the color buffer
+    // Creating a SDL texture that is used to display the color buffer
     color_buffer_texture = SDL_CreateTexture(
         renderer,
         SDL_PIXELFORMAT_ARGB8888,
@@ -94,6 +92,20 @@ void update(void) {
     // TODO:
 }
 
+void draw_grid(void) {
+    // Draw a background grid that fills the entire window.
+    // Lines should be rendedered at every row/col multiple of 10.
+    int grid_size = 10;
+    uint32_t grid_color = 0xFF333333;
+
+    for (int y = 0; y < window_height; y++) {
+        for (int x = 0; x < window_width; x++) {
+            if ((x % grid_size == 0) || (y % grid_size == 0))
+                color_buffer[(window_width * y) + x] = grid_color;
+        }
+    }
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(
         color_buffer_texture,
@@ -117,9 +129,10 @@ void render(void) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    render_color_buffer();
+    draw_grid();
     
-    clear_color_buffer(0xFFFFFF00);
+    render_color_buffer();
+    clear_color_buffer(0xFF000000);
 
     SDL_RenderPresent(renderer);
 }
