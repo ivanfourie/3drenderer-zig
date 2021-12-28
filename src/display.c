@@ -2,8 +2,8 @@
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-int window_width = 800;
-int window_height = 600;
+int window_width = 1920;
+int window_height = 1080;
 
 // Delcare a pointer to an array of uint32 elments
 uint32_t* color_buffer = NULL;
@@ -18,11 +18,11 @@ bool initialize_window(void) {
     };
 
     // Use SDL to find out max. width and height for fullscreen
-    SDL_DisplayMode display_mode;
-    SDL_GetCurrentDisplayMode(0, &display_mode);
+    // SDL_DisplayMode display_mode;
+    // SDL_GetCurrentDisplayMode(0, &display_mode);
 
-    window_width = display_mode.w;
-    window_height = display_mode.h;
+    // window_width = display_mode.w;
+    // window_height = display_mode.h;
 
     // Create a SDL Window
     window = SDL_CreateWindow(
@@ -31,7 +31,7 @@ bool initialize_window(void) {
             SDL_WINDOWPOS_CENTERED,
             window_width,
             window_height,
-            SDL_WINDOW_BORDERLESS
+            SDL_WINDOW_SHOWN
     );
     
     if (!window) {
@@ -57,7 +57,7 @@ void draw_grid(void) {
     // Draw a background grid that fills the entire window.
     // Lines should be rendedered at every row/col multiple of 10.
     int grid_size = 10;
-    uint32_t grid_color = 0xFF333333;
+    uint32_t grid_color = 0xFF444444;
 
     for (int y = 0; y < window_height; y+=grid_size) {
         for (int x = 0; x < window_width; x+=grid_size) {
@@ -77,7 +77,7 @@ void draw_rect(int x, int y, int width, int height, uint32_t color) {
         for (int j = 0; j < height; j++) {
             int current_x = x + i;
             int current_y = y + j;
-            color_buffer[(window_width * current_y) + current_x] = color;
+            draw_pixel(current_x, current_y, color);
         }
     }
 }
