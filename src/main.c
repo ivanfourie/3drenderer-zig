@@ -30,7 +30,7 @@ void setup(void) {
     );
 
     // Loads the cube values in the mesh data structure
-    load_cube_mesh_data();
+    load_obj_file_data("./assets/f22.obj");
 }
 
 
@@ -72,8 +72,8 @@ void update(void) {
     triangles_to_render = NULL;
     
     mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
-    mesh.rotation.z += 0.01;
+    mesh.rotation.y += 0.001;
+    mesh.rotation.z += 0.001;
     
     // Loop all triangle faces of our mesh
     int num_faces = array_length(mesh.faces);
