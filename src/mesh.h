@@ -10,7 +10,9 @@
 extern vec3_t cube_vertices[M_CUBE_VERTICES];
 extern face_t cube_faces[M_CUBE_FACES];
 
-// Define a struct for dynamic size meshes
+//
+// Define a struct for dynamic size meshes, witharray of vertices and faces
+//
 typedef struct {
 	vec3_t* vertices;	// dynamic array of vertices
 	face_t* faces;		// dynamic array of faces

@@ -42,7 +42,6 @@ bool initialize_window(void) {
     
     // Create a SDL renderer
     renderer = SDL_CreateRenderer(window, -1, 0);
-
     if (!renderer) {
         fprintf(stderr, "Error creating SDL renderer.\n");
         return false;
