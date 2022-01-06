@@ -130,10 +130,16 @@ void update(void) {
         // Get the vector subtraction (B-A) and (C-A)
         vec3_t vector_ba = vec3_sub(vector_b, vector_a);
         vec3_t vector_ca = vec3_sub(vector_c, vector_a);
+        // Normalize to normal vectors
+        vec3_normalize(&vector_ba);
+        vec3_normalize(&vector_ca);
 
         // Compute the face normal (using cross product to find perpendicular)
         // because the coordinate system is left handed the cross product will (AB cross CA)
         vec3_t normal = vec3_cross(vector_ba, vector_ca);
+
+        // Normalize the face normal vector
+        vec3_normalize(&normal);
 
         // Find the the vector between a point in the triangle and the camera origin
         vec3_t camera_ray = vec3_sub(camera_position, vector_a);

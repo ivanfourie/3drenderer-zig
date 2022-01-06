@@ -47,6 +47,12 @@ float vec2_dot(vec2_t a, vec2_t b) {
 	return (a.x * b.x) + (a.y * b.y);
 }
 
+// Normalize a 2D vector (by reference)
+void vec2_normalize(vec2_t* v) {
+	float length = sqrt(v->x * v->x + v->y * v->y);
+	v->x /= length;
+	v->y /= length;
+}
 
 //
 // Implementations of Vector 3D functions
@@ -107,6 +113,14 @@ vec3_t vec3_cross(vec3_t a, vec3_t b) {
 // If it is positive they are pointing in the same direction, 0 they are perpendicular and negative away from each other
 float vec3_dot(vec3_t a, vec3_t b) {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+// Normalize a 3D vector (by reference)
+void vec3_normalize(vec3_t* v) {
+	float length = sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+	v->x /= length;
+	v->y /= length;
+	v->z /= length;
 }
 
 // Rotate around x rotation based on the angle given using sine and cosine angle addition formulas to calculate rotation
