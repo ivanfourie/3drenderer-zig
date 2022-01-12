@@ -184,17 +184,25 @@ void render(void) {
     for (int i = 0; i < num_triangles; i++) {
         triangle_t triangle = triangles_to_render[i];
         
-        // Draw vertex points
-        draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00); // vertex A
-        draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00); // vertex B
-        draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00); // vertex C
+        // // Draw vertex points
+        // draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00); // vertex A
+        // draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00); // vertex B
+        // draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00); // vertex C
         
+        // Draw filled triangle
+        draw_filled_triangle(
+            triangle.points[0].x, triangle.points[0].y, // vertex A
+            triangle.points[1].x, triangle.points[1].y, // vertex B
+            triangle.points[2].x, triangle.points[2].y, // vertex C
+            0xFFFFFFFF
+        );
+
         // Draw unfilled triangle
         draw_triangle(
             triangle.points[0].x, triangle.points[0].y, // vertex A
             triangle.points[1].x, triangle.points[1].y, // vertex B
             triangle.points[2].x, triangle.points[2].y, // vertex C
-            0xFF00FF00
+            0xFF000000
         );
 
     }

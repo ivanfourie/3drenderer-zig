@@ -78,7 +78,7 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
     int delta_x = (x1 - x0); // run
     int delta_y = (y1 - y0); // rise 
 
-    // Find the the longest side lenght to iterate
+    // Find the the longest side length to iterate
     // Sometimes delta_y is greate than delta_x meaning we need to run the total delta_y side length instead of of delta_x
     int longest_side_length = abs(delta_x) >= abs(delta_y) ? abs(delta_x) : abs(delta_y);
 
