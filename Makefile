@@ -1,8 +1,8 @@
 build:
-	gcc -Wall -std=c99 ./src/*.c -lSDL2 -lm -o rendeder
+	gcc -Wall -std=c99 ./src/*.c `pkg-config --cflags --libs sdl2` -lm -o renderer
 
 run:
-	./rendeder
+	./renderer
 
 clean:
-	rm rendeder
+	rm renderer
