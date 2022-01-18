@@ -117,3 +117,19 @@ vec4_t mat4_mul_vec4(mat4_t m, vec4_t v) {
     result.w = m.m[3][0] * v.x + m.m[3][1] * v.y + m.m[3][2] * v.z + m.m[3][3] * v.w;
     return result;
 }
+
+mat4_t mat4_mul_mat4(mat4_t a, mat4_t b) {
+   /*  
+        | a11   a12   a13   a14 |     | b11   b12   b13   b14 |
+        | a21   a22   a23   a24 |  *  | b21   b22   b23   b24 |
+        | a31   a32   a33   a34 |     | b31   b32   b33   b34 |
+        | a41   a42   a43   a44 |     | b41   b42   b43   b44 |
+    */
+    mat4_t m;
+    for (int i = 0; i < 4; i++) {        // rows
+        for (int j = 0; j < 4; j++) {    // columns
+            m.m[i][j] = a.m[i][0] * b.m[0][j] + a.m[i][1] * b.m[1][j] + a.m[i][2] * b.m[2][j] + a.m[i][3] * b.m[3][j];
+        }
+    }
+    return m;
+}
