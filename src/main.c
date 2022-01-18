@@ -134,9 +134,9 @@ void update(void) {
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.01;
     mesh.rotation.z += 0.01;
-    // mesh.scale.x += 0.002;
-    // mesh.scale.y += 0.001;
-    mesh.translation.x += 0.0001;
+    mesh.scale.x += 0.002;
+    mesh.scale.y += 0.001;
+    mesh.translation.x += 0.01;
     mesh.translation.z = 5.0;
 
     // Create a scale matrix, rotation and translation that will be used to multiply the mesh vertices 
@@ -165,13 +165,15 @@ void update(void) {
 
             // Create a World Matrix cominging scale, rptatopm amd translation matrices
             mat4_t world_matrix = mat4_identity(); // Start with the eye/identity matix
+            // Order matters: First scale, then rotate, then translate. [T]*[R]*[S]*v
+
             // #1 Scale
             world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
-            // #2 Rotation
+            // #2 Rotate
             world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_z, world_matrix);
-            // #4 Translation
+            // #3 Translate
             world_matrix = mat4_mul_mat4(translation_matrix, world_matrix);
 
             // Multiply the wolrd matrix by the original vector
