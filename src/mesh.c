@@ -98,6 +98,6 @@ void load_obj_file_data(char* filename) {
         }
     }
 
-    // close the file
-    fclose(file);
+     if (file != NULL) // close the file
+        fclose(file);
 }
