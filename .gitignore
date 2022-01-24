@@ -9,5 +9,3 @@
 
 ### Above combination will ignore all files without extension ###
 
-# ignore IDE for now
-.vscode
