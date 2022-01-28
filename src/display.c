@@ -18,12 +18,11 @@ bool initialize_window(void) {
     };
 
     // Use SDL to find out max. width and height for fullscreen
-    // Does not work so well with WSL2 + XLaunch (VCXSRV)
-    // SDL_DisplayMode display_mode;
-    // SDL_GetCurrentDisplayMode(0, &display_mode);
+    SDL_DisplayMode display_mode;
+    SDL_GetCurrentDisplayMode(0, &display_mode);
 
-    // window_width = display_mode.w;
-    // window_height = display_mode.h;
+    window_width = display_mode.w;
+    window_height = display_mode.h;
 
     // Create a SDL Window
     window = SDL_CreateWindow(
@@ -47,8 +46,7 @@ bool initialize_window(void) {
         return false;
     }
 
-    // Crashes on WSL :(
-    // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
 }
