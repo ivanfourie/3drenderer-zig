@@ -35,7 +35,7 @@ int previous_frame_time = 0;
 //
 void setup(void) {
     // Initialize render mode and triangle culling method
-    render_method = RENDER_FILL_TRIANGLE;
+    render_method = RENDER_TEXTURE_WIRE;
     cull_method = CULL_BACKFACE;
     
     // Allocate the required memory in bytes for the color buffer
@@ -60,7 +60,7 @@ void setup(void) {
     // Manually load hardcoded texture data from the static array
     mesh_texture = (uint32_t*) REDBRICK_TEXTURE;
     texture_width = 64;
-    texture_heigth = 64;
+    texture_height = 64;
 
     // Loads the cube values in the mesh data structure
     load_cube_mesh_data();
@@ -148,21 +148,20 @@ void update(void) {
     
 
     // Change the mesh scale, rotation & translation values per animation frame
-    mesh.rotation.x += 0.005;
-    mesh.rotation.y += 0.001;
-    // mesh.rotation.z += 0.01;
+    mesh.rotation.x += 0.008;
+    mesh.rotation.y += 0.003;
+    mesh.rotation.z += 0.01;
     mesh.translation.z = 5.0;
 
     // Create a scale matrix, rotation and translation that will be used to multiply the mesh vertices 
     mat4_t scale_matrix = mat4_make_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+    mat4_t translation_matrix = mat4_make_translation(mesh.translation.x, mesh.translation.y, mesh.translation.z);
     mat4_t rotation_matrix_x = mat4_make_rotation_x(mesh.rotation.x);
     mat4_t rotation_matrix_y = mat4_make_rotation_y(mesh.rotation.y);
     mat4_t rotation_matrix_z = mat4_make_rotation_z(mesh.rotation.z);
-    mat4_t translation_matrix = mat4_make_translation(mesh.translation.x, mesh.translation.y, mesh.translation.z);
     
     // Loop all triangle faces of our mesh
     int num_faces = array_length(mesh.faces);
-
     for (int i = 0; i < num_faces; i++) {
         face_t mesh_face = mesh.faces[i];
         
@@ -184,9 +183,9 @@ void update(void) {
             // #1 Scale
             world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
             // #2 Rotate
-            world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
-            world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
             world_matrix = mat4_mul_mat4(rotation_matrix_z, world_matrix);
+            world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
+            world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
             // #3 Translate
             world_matrix = mat4_mul_mat4(translation_matrix, world_matrix);
 
@@ -204,15 +203,15 @@ void update(void) {
         vec3_t vector_c = vec3_from_vec4(transformed_vertices[2]); /* C---B */
 
         // Get the vector subtraction (B-A) and (C-A)
-        vec3_t vector_ba = vec3_sub(vector_b, vector_a);
-        vec3_t vector_ca = vec3_sub(vector_c, vector_a);
+        vec3_t vector_ab = vec3_sub(vector_b, vector_a);
+        vec3_t vector_ac = vec3_sub(vector_c, vector_a);
         // Normalize to normal vectors
-        vec3_normalize(&vector_ba);
-        vec3_normalize(&vector_ca);
+        vec3_normalize(&vector_ab);
+        vec3_normalize(&vector_ac);
 
         // Compute the face normal (using cross product to find perpendicular)
         // because the coordinate system is left handed the cross product will (AB cross CA)
-        vec3_t normal = vec3_cross(vector_ba, vector_ca);
+        vec3_t normal = vec3_cross(vector_ab, vector_ac);
 
         // Normalize the face normal vector
         vec3_normalize(&normal);
@@ -261,16 +260,16 @@ void update(void) {
 
         triangle_t projected_triangle = {
             .points = {
-                { projected_points[0].x, projected_points[0].y },
-                { projected_points[1].x, projected_points[1].y },
-                { projected_points[2].x, projected_points[2].y }
+                { projected_points[0].x, projected_points[0].y, projected_points[0].z, projected_points[0].w },
+                { projected_points[1].x, projected_points[1].y, projected_points[1].z, projected_points[1].w },
+                { projected_points[2].x, projected_points[2].y, projected_points[2].z, projected_points[2].w }
             },
             .texcoords = {
                 { mesh_face.a_uv.u, mesh_face.a_uv.v },
                 { mesh_face.b_uv.u, mesh_face.b_uv.v },
                 { mesh_face.c_uv.u, mesh_face.c_uv.v }
             },
-            .color = light_apply_intensity(triangle_color, light_intensity_factor),
+            .color = triangle_color,
             .avg_depth = avg_depth
         };
        
@@ -283,12 +282,12 @@ void update(void) {
 
     triangle_t tmp_triangle;
     for (int i = 0; i < num_triangles; i++) {   // loop num_triangles times - 1 per element
-        for (int j = 0; j < num_triangles - i - 1; j++) { // last i elements are sorted already
+        for (int j = i; j < num_triangles; j++) { // last i elements are sorted already
             if (triangles_to_render[j].avg_depth <= triangles_to_render[j + 1].avg_depth) {  
                 // Swop triangle positions
                 tmp_triangle = triangles_to_render[j];
                 triangles_to_render[j] = triangles_to_render[j + 1];
-                triangles_to_render[j + 1] = tmp_triangle;
+                triangles_to_render[j] = tmp_triangle;
             }
         }
     }
@@ -331,9 +330,9 @@ void render(void) {
         // Draw textured triangle
         if (render_method == RENDER_TEXTURED || render_method == RENDER_TEXTURE_WIRE) {
             draw_textured_triangle(
-                triangle.points[0].x, triangle.points[0].y, triangle.texcoords[0].u, triangle.texcoords[0].v, // vertex A
-                triangle.points[1].x, triangle.points[1].y, triangle.texcoords[1].u, triangle.texcoords[1].v, // vertex B
-                triangle.points[2].x, triangle.points[2].y, triangle.texcoords[2].u, triangle.texcoords[2].v, // vertex C
+                triangle.points[0].x, triangle.points[0].y, triangle.points[0].z, triangle.points[0].w, triangle.texcoords[0].u, triangle.texcoords[0].v, // vertex A
+                triangle.points[1].x, triangle.points[1].y, triangle.points[1].z, triangle.points[1].w, triangle.texcoords[1].u, triangle.texcoords[1].v, // vertex B
+                triangle.points[2].x, triangle.points[2].y, triangle.points[2].z, triangle.points[2].w, triangle.texcoords[2].u, triangle.texcoords[2].v, // vertex C
                 mesh_texture
             );
         }

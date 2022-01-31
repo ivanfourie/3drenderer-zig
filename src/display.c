@@ -2,8 +2,8 @@
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-int window_width = 1920;
-int window_height = 1080;
+int window_width = 800;
+int window_height = 600;
 
 // Delcare a pointer to an array of uint32 elments
 uint32_t* color_buffer = NULL;
@@ -31,7 +31,7 @@ bool initialize_window(void) {
             SDL_WINDOWPOS_CENTERED,
             window_width,
             window_height,
-            SDL_WINDOW_SHOWN
+            SDL_WINDOW_BORDERLESS
     );
     
     if (!window) {
@@ -65,7 +65,7 @@ void draw_grid(void) {
 }
 
 void draw_pixel(int x, int y, uint32_t color) {
-    if (x < window_width && y < window_height) {
+    if (x >= 0 && x < window_width && y >= 0 && y < window_height) {
         color_buffer[(window_width * y) + x] = color;
     }
 }
