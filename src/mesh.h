@@ -4,11 +4,11 @@
 #include "vector.h"
 #include "triangle.h"
 
-#define M_CUBE_VERTICES 8
-#define M_CUBE_FACES (6 * 2) // 6 cube faces, 2 traingles per face
+#define N_CUBE_VERTICES 8
+#define N_CUBE_FACES (6 * 2) // 6 cube faces, 2 traingles per face
 
-extern vec3_t cube_vertices[M_CUBE_VERTICES];
-extern face_t cube_faces[M_CUBE_FACES];
+extern vec3_t cube_vertices[N_CUBE_VERTICES];
+extern face_t cube_faces[N_CUBE_FACES];
 
 //
 // Define a struct for dynamic size meshes, witharray of vertices and faces
