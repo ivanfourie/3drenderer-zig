@@ -67,6 +67,8 @@ void load_obj_file_data(char* filename) {
     const unsigned MAX_LENGTH = 1024;
     char line[MAX_LENGTH];
 
+    tex2_t* texcoords = NULL;
+
     while (fgets(line, MAX_LENGTH, file)) {
         // Vertex information
         if (strncmp(line, "v ", 2) == 0) {
@@ -75,6 +77,12 @@ void load_obj_file_data(char* filename) {
             array_push(mesh.vertices, vertex);
         }
 
+        // Texture coordinate information
+        if (strncmp(line, "vt ", 2) == 0) {
+            tex2_t texcoord;
+            sscanf(line, "vt %f %f", &texcoord.u, &texcoord.v);
+            array_push(texcoords, texcoord);
+        }
         // Face information
         if (strncmp(line, "f ", 2) == 0) {
             
@@ -89,9 +97,12 @@ void load_obj_file_data(char* filename) {
             );
 
             face_t face = {
-                .a = vertex_indices[0],
-                .b = vertex_indices[1],
-                .c = vertex_indices[2],
+                .a = vertex_indices[0] - 1,
+                .b = vertex_indices[1] - 1,
+                .c = vertex_indices[2] - 1,
+                .a_uv = texcoords[texture_indices[0] - 1],
+                .b_uv = texcoords[texture_indices[1] - 1],
+                .c_uv = texcoords[texture_indices[2] - 1],
                 .color = 0xFFFFFFFF
             };
 
@@ -99,6 +110,7 @@ void load_obj_file_data(char* filename) {
         }
     }
 
-     if (file != NULL) // close the file
+    array_free(texcoords);
+    if (file != NULL) // close the file
         fclose(file);
 }
