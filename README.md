@@ -2,11 +2,13 @@
 
 A project written in C (C99) & SDL to explore writing a software 3D renderer almost from scratch.
 
-This is entirely based on the following online course: https://courses.pikuma.com/courses/learn-computer-graphics-programming
+![Rendered F22 model](./assets/screenshot-f22.png?raw=true|width=250)
 
-# Dev environment
+It entirely based on the following online course: https://courses.pikuma.com/courses/learn-computer-graphics-programming
 
-This project uses the GNU C Compiler toolchain. 
+# Platforms
+
+This project uses the GNU C Compiler toolchain and should theorically work on those that supports and SDL. 
 
 ## Windows
 ### Windows 11: WSL2 and WSLg
@@ -42,3 +44,9 @@ To build the project
 To run it
 
     make run
+
+# Credits
+* The incredibly fun [3D Graphics Programming from Scratch](https://courses.pikuma.com/courses/learn-computer-graphics-programming) course by Gustavo Pezzi
+* `f22.obj`, `efa.obj`, and `f117.obj` aircraft files were created by Artem Katrych.
+* `crab.obj` file was created by [Bohdan Lvov](https://sketchfab.com/ostapblendercg)
+* `drone.obj` file was created by [Willy Decarpentrie](https://sketchfab.com/skudgee).

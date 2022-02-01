@@ -78,7 +78,7 @@ void load_obj_file_data(char* filename) {
         }
 
         // Texture coordinate information
-        if (strncmp(line, "vt ", 2) == 0) {
+        if (strncmp(line, "vt ", 3) == 0) {
             tex2_t texcoord;
             sscanf(line, "vt %f %f", &texcoord.u, &texcoord.v);
             array_push(texcoords, texcoord);

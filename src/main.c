@@ -60,10 +60,10 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     // load_cube_mesh_data();
-    load_obj_file_data("./assets/cube.obj");
+    load_obj_file_data("./assets/f22.obj");
 
     // Load texture information from an external PNG file
-    load_png_texture_data("./assets/cube.png");
+    load_png_texture_data("./assets/f22.png");
 }
 
 //
@@ -147,8 +147,8 @@ void update(void) {
     
 
     // Change the mesh scale, rotation & translation values per animation frame
-    //mesh.rotation.x += 0.008;
-    mesh.rotation.y += 0.003;
+    mesh.rotation.x += -0.008;
+    //mesh.rotation.y += 0.008;
     //mesh.rotation.z += 0.01;
     mesh.translation.z = 5.0;
 
@@ -196,7 +196,7 @@ void update(void) {
         }
         
         
-        // Check backface culling
+        // Get individual vectors from A, B and C vertices to compute normal
         vec3_t vector_a = vec3_from_vec4(transformed_vertices[0]); /*   A   */
         vec3_t vector_b = vec3_from_vec4(transformed_vertices[1]); /*  / \  */
         vec3_t vector_c = vec3_from_vec4(transformed_vertices[2]); /* C---B */
@@ -235,12 +235,12 @@ void update(void) {
             // Project the current vertex
             projected_points[j] = mat4_mul_vec4_project(proj_matrix, transformed_vertices[j]);
 
+            // Flip vertically since the y values of the 3D mesh grow bottom->up and in screen space y values grow top->down
+            projected_points[j].y *= -1;
+
             // Scale into the view
             projected_points[j].x *= window_width / 2.0;
             projected_points[j].y *= window_height / 2.0;
-
-            // Invert the y values to account for flipped screen y coordinate
-            projected_points[j].y *= -1;
 
             // Translate the projected point to the middle of the screen
             projected_points[j].x += (window_width / 2.0);
@@ -278,19 +278,16 @@ void update(void) {
 
     // Sort the triangles to render by their avg_depth in reverse order using painter's algorithm and bubblesort
     int num_triangles = array_length(triangles_to_render);
-
-    triangle_t tmp_triangle;
     for (int i = 0; i < num_triangles; i++) {   // loop num_triangles times - 1 per element
         for (int j = i; j < num_triangles; j++) { // last i elements are sorted already
-            if (triangles_to_render && triangles_to_render[j].avg_depth <= triangles_to_render[j + 1].avg_depth) {  
-                // Swop triangle positions
-                tmp_triangle = triangles_to_render[j];
-                triangles_to_render[j] = triangles_to_render[j + 1];
+            if (triangles_to_render && triangles_to_render[i].avg_depth < triangles_to_render[j].avg_depth) {  
+                // Swap triangle positions
+                triangle_t tmp_triangle = triangles_to_render[i];
+                triangles_to_render[i] = triangles_to_render[j];
                 triangles_to_render[j] = tmp_triangle;
             }
         }
     }
-        
 }
 
 
