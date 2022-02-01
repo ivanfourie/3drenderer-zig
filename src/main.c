@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <SDL.h>
+#include "upng.h"
 #include "array.h"
 #include "display.h"
 #include "vector.h"
@@ -35,7 +36,7 @@ int previous_frame_time = 0;
 //
 void setup(void) {
     // Initialize render mode and triangle culling method
-    render_method = RENDER_TEXTURE_WIRE;
+    render_method = RENDER_TEXTURED;
     cull_method = CULL_BACKFACE;
     
     // Allocate the required memory in bytes for the color buffer
@@ -44,7 +45,7 @@ void setup(void) {
     // Creating a SDL texture that is used to display the color buffer
     color_buffer_texture = SDL_CreateTexture(
         renderer,
-        SDL_PIXELFORMAT_ARGB8888,
+        SDL_PIXELFORMAT_RGBA32,
         SDL_TEXTUREACCESS_STREAMING,
         window_width,
         window_height
@@ -57,14 +58,12 @@ void setup(void) {
     float zfar = 100.0;
     proj_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-    // Manually load hardcoded texture data from the static array
-    mesh_texture = (uint32_t*) REDBRICK_TEXTURE;
-    texture_width = 64;
-    texture_height = 64;
-
     // Loads the cube values in the mesh data structure
     load_cube_mesh_data();
     //load_obj_file_data("./assets/f22.obj");
+
+    // Load texture information from an external PNG file
+    load_png_texture_data("./assets/cube.png");
 }
 
 //
@@ -148,9 +147,9 @@ void update(void) {
     
 
     // Change the mesh scale, rotation & translation values per animation frame
-    mesh.rotation.x += 0.008;
+    //mesh.rotation.x += 0.008;
     mesh.rotation.y += 0.003;
-    mesh.rotation.z += 0.01;
+    //mesh.rotation.z += 0.01;
     mesh.translation.z = 5.0;
 
     // Create a scale matrix, rotation and translation that will be used to multiply the mesh vertices 
@@ -367,6 +366,7 @@ void render(void) {
 //
 void free_resources(void) {
     free(color_buffer);
+    upng_free(png_texture);
     array_free(mesh.faces);
     array_free(mesh.vertices);
 }
