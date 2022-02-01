@@ -1,14 +1,17 @@
 # Software 3D Renderer project
 
-A project written in C (C99) & SDL to explore writing a software 3D renderer almost from scratch.
+A project written in C (C99) & SDL to explore writing a software 3D renderer from scratch.
 
 ![Rendered F22 model](./assets/screenshot-f22.png?raw=true|width=250)
 
-It entirely based on the following online course: https://courses.pikuma.com/courses/learn-computer-graphics-programming
+It is based on the following online course by Gustavo Pezzi: https://courses.pikuma.com/courses/learn-computer-graphics-programming
 
 # Platforms
 
 This project uses the GNU C Compiler toolchain and should theorically work on those that supports and SDL. 
+
+## Linux
+Compilation should be straight forward without configuration if all dev dependencies are installed such as `make`, `gcc`, `libsdl2-dev.` I worked on this project exclusively on WSL (Ubuntu) and MSVC, so have not tested it yet in a non-virtualised Linux environment.
 
 ## Windows
 ### Windows 11: WSL2 and WSLg
