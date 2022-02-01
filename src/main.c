@@ -283,7 +283,7 @@ void update(void) {
     triangle_t tmp_triangle;
     for (int i = 0; i < num_triangles; i++) {   // loop num_triangles times - 1 per element
         for (int j = i; j < num_triangles; j++) { // last i elements are sorted already
-            if (triangles_to_render[j].avg_depth <= triangles_to_render[j + 1].avg_depth) {  
+            if (triangles_to_render && triangles_to_render[j].avg_depth <= triangles_to_render[j + 1].avg_depth) {  
                 // Swop triangle positions
                 tmp_triangle = triangles_to_render[j];
                 triangles_to_render[j] = triangles_to_render[j + 1];
