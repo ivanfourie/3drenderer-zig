@@ -2,7 +2,7 @@
 
 A project written in C (C99) & SDL to explore writing a software 3D renderer from scratch.
 
-![Rendered F22 model](./assets/screenshot-f22.png?raw=true|width=250)
+![Rendered F22 model](./assets/f22.gif?raw=true)
 
 It is based on the following online course by Gustavo Pezzi: https://courses.pikuma.com/courses/learn-computer-graphics-programming
 
@@ -47,6 +47,23 @@ To build the project
 To run it
 
     make run
+
+# Input keys
+
+* `1`: Show the wireframe and a small red dot for each triangle vertex
+* `2`: Show only the wireframe lines
+* `3`: Show filled triangles with a solid color
+* `4`: Show both filled triangles and wireframe lines
+* `5`: Show textured triangles
+* `6`: Show textured triangles with a wireframe
+* `c`: Toggle back-face culling
+* `r`: Toggle automatic rotation
+* `Up`: Rotate up (x-axis)
+* `Down`: Rotate down (x-axis)
+* `Left`: Rotate left (y-axis)
+* `Right`: Rotate right (y-axis)
+* `.`: Increase rotation rate
+* `,`: Decrease rotation rate
 
 # Credits
 * The incredibly fun [3D Graphics Programming from Scratch](https://courses.pikuma.com/courses/learn-computer-graphics-programming) course by Gustavo Pezzi

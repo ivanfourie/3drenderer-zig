@@ -31,6 +31,10 @@ mat4_t proj_matrix;
 bool is_running = false;
 int previous_frame_time = 0;
 
+bool is_autorotate = true;
+float rotation_rate = 0.05;
+float rotation_increment = 0.01;
+
 //
 // Setup function to initialise variables and game objects
 //
@@ -123,6 +127,37 @@ void process_input(void) {
                     printf("Mode: Back-face culling %s.\n", cull_method == CULL_BACKFACE ? "on" : "off");
                     
                     break;
+                case SDLK_r:
+                    // Toggle autorotation
+                    is_autorotate = !is_autorotate;
+                    printf("Mode: Automatic rotation is %s.\n", is_autorotate ? "on" : "off");
+                    break;
+                case SDLK_UP:
+                    // Rotate up
+                    mesh.rotation.x -= rotation_rate;
+                    break;
+                case SDLK_DOWN:
+                    // Rotate down
+                    mesh.rotation.x += rotation_rate;
+                    break;
+                case SDLK_LEFT:
+                    // Rotate left
+                    mesh.rotation.y -= rotation_rate;
+                    break;
+                case SDLK_RIGHT:
+                    // Rotate right
+                    mesh.rotation.y += rotation_rate;
+                    break;
+                case SDLK_PERIOD:
+                    // Increase rotation rate
+                    rotation_rate += rotation_increment;
+                    printf("Rotation increased to %f.\n", rotation_rate);
+                    break;
+                case SDLK_COMMA:
+                    // Decrease rotation rate
+                    rotation_rate -= rotation_increment;
+                    printf("Rotation decreased to %f.\n", rotation_rate);
+                    break;
             }
             break;
     }
@@ -147,9 +182,11 @@ void update(void) {
     
 
     // Change the mesh scale, rotation & translation values per animation frame
-    mesh.rotation.x += -0.008;
-    //mesh.rotation.y += 0.008;
-    //mesh.rotation.z += 0.01;
+    if (is_autorotate) {
+        mesh.rotation.x += rotation_rate;
+        //mesh.rotation.y += 0.008;
+        //mesh.rotation.z += 0.01;
+    }
     mesh.translation.z = 5.0;
 
     // Create a scale matrix, rotation and translation that will be used to multiply the mesh vertices 
