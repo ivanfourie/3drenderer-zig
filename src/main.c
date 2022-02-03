@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#define SDL_DISABLE_IMMINTRIN_H
 #include <SDL.h>
 #include "upng.h"
 #include "array.h"
@@ -183,7 +184,7 @@ void update(void) {
 
     // Change the mesh scale, rotation & translation values per animation frame
     if (is_autorotate) {
-        mesh.rotation.x += rotation_rate;
+        mesh.rotation.x -= rotation_rate;
         //mesh.rotation.y += 0.008;
         //mesh.rotation.z += 0.01;
     }

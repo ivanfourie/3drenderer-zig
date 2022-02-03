@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#define SDL_DISABLE_IMMINTRIN_H
 #include <SDL.h>
 
 #define FPS 30

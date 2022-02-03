@@ -11,7 +11,7 @@ It is based on the following online course by Gustavo Pezzi: https://courses.pik
 This project uses the GNU C Compiler toolchain and should theorically work on those that supports and SDL. 
 
 ## Linux
-Compilation should be straight forward without configuration if all dev dependencies are installed such as `make`, `gcc`, `libsdl2-dev.` I worked on this project exclusively on WSL (Ubuntu) and MSVC, so have not tested it yet in a non-virtualised Linux environment.
+Compilation should be straight forward without configuration if all dev dependencies are installed such as `make`, `gcc`, `libsdl2-dev` and optionally `tcc` aka [TinyCC](https://bellard.org/tcc/). I worked on this project exclusively on WSL (Ubuntu) and MSVC, so have not tested it yet in a non-virtualised Linux environment.
 
 ## Windows
 ### Windows 11: WSL2 and WSLg
@@ -36,17 +36,21 @@ To run after building the binary, make sure to place SLD2.dll in the same folder
 
 # Dependencies
 
-The main dependency of this project is the SDL2 library. Make sure `libsdl2-dev` is installed on your distro using its package manager.
+The main dependency of this project is the [Simple DirectMedia Layer 2](https://www.libsdl.org/) library.
 
-# Building and runnning
+# Building and running
 
 To build the project
 
     make
 
-To run it
+To run the executable
 
     make run
+
+To fast compile and execute directly in memory (requires `tcc`)
+
+    make mem
 
 # Input keys
 
