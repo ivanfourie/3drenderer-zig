@@ -44,8 +44,9 @@ void setup(void) {
     render_method = RENDER_TEXTURED;
     cull_method = CULL_BACKFACE;
     
-    // Allocate the required memory in bytes for the color buffer
+    // Allocate the required memory in bytes for the color and z buffers
     color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * window_width * window_height);
+    z_buffer = (float*) malloc(sizeof(float) * window_width * window_height);
 
     // Creating a SDL texture that is used to display the color buffer
     color_buffer_texture = SDL_CreateTexture(
@@ -65,10 +66,10 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     // load_cube_mesh_data();
-    load_obj_file_data("./assets/f22.obj");
+    load_obj_file_data("./assets/f117.obj");
 
     // Load texture information from an external PNG file
-    load_png_texture_data("./assets/f22.png");
+    load_png_texture_data("./assets/f117.png");
 }
 
 //
@@ -168,10 +169,10 @@ void process_input(void) {
 // Update function frame by frame with a fixed time step
 //
 void update(void) {
-    // Wait some time until we reacg the target frame time in milliseconds
+    // Wait some time until we reach the target frame time in milliseconds
     int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
     
-    // Only delay execution if we are running to fast
+    // Only delay execution if we are running too fast
     if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) {
         SDL_Delay(time_to_wait);
     }
@@ -313,19 +314,6 @@ void update(void) {
         // Save the projected triangle in the array of triangles to render
         array_push(triangles_to_render, projected_triangle);
     }
-
-    // Sort the triangles to render by their avg_depth in reverse order using painter's algorithm and bubblesort
-    int num_triangles = array_length(triangles_to_render);
-    for (int i = 0; i < num_triangles; i++) {   // loop num_triangles times - 1 per element
-        for (int j = i; j < num_triangles; j++) { // last i elements are sorted already
-            if (triangles_to_render && triangles_to_render[i].avg_depth < triangles_to_render[j].avg_depth) {  
-                // Swap triangle positions
-                triangle_t tmp_triangle = triangles_to_render[i];
-                triangles_to_render[i] = triangles_to_render[j];
-                triangles_to_render[j] = tmp_triangle;
-            }
-        }
-    }
 }
 
 
@@ -392,6 +380,7 @@ void render(void) {
 
     render_color_buffer();
     clear_color_buffer(0xFF000000);
+    clear_z_buffer();
 
     SDL_RenderPresent(renderer);
 }
@@ -401,6 +390,7 @@ void render(void) {
 //
 void free_resources(void) {
     free(color_buffer);
+    free(z_buffer);
     upng_free(png_texture);
     array_free(mesh.faces);
     array_free(mesh.vertices);

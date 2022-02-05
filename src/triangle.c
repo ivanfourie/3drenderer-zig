@@ -197,7 +197,18 @@ void draw_texel(
     
 	// Use modulo function to prevent texture buffer overflow
     int tex_index = ((texture_width * tex_y) + tex_x) % (texture_width * texture_height);
-    draw_pixel(x, y, texture[tex_index]);
+
+	// Adjust 1/w so that pixels that are close to the camera have smaller values
+	interpolated_reciprocal_w = 1.0 - interpolated_reciprocal_w;
+	
+	// Only draw the pixel if the depth value is less than the one previously stored in the z-buffer
+	if (interpolated_reciprocal_w < z_buffer[(window_width * y) + x]) {
+		// Darw a pixel at postion (x, y) with the color that comes from the mapped texture
+		draw_pixel(x, y, texture[tex_index]);
+
+		// Update the z-buffer value with the 1/w of this current pixel
+		z_buffer[(window_width * y) + x] = interpolated_reciprocal_w;
+	}
 }
 
 /*

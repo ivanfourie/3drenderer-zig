@@ -7,6 +7,7 @@ int window_height = 600;
 
 // Delcare a pointer to an array of uint32 elments
 uint32_t* color_buffer = NULL;
+float* z_buffer = NULL;
 
 // SDL Texture
 SDL_Texture* color_buffer_texture = NULL;
@@ -115,12 +116,19 @@ void render_color_buffer(void) {
 }
 
 void clear_color_buffer(uint32_t color) {
-    
     for (int y = 0; y < window_height; y++) {
         for (int x = 0; x < window_width; x++) {
             color_buffer[(window_width * y) + x] = color;
         }
     }    
+}
+
+void clear_z_buffer() {
+    for (int y = 0; y < window_height; y++) {
+        for (int x = 0; x < window_width; x++) {
+            z_buffer[(window_width * y) + x] = 1.0; // every time you start with z, start with 1 (1 is deepest) in left-handed coords system
+        }
+    }
 }
 
 void destroy_window(void) {
