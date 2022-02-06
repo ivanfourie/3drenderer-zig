@@ -21,7 +21,9 @@
 //
 // Array of triangles that should be rendered frame by frame
 //
-triangle_t* triangles_to_render = NULL;
+#define MAX_TRIANGLES_PER_MESH 10000
+triangle_t triangles_to_render[MAX_TRIANGLES_PER_MESH];
+int num_triangles_to_render = 0;
 
 vec3_t camera_position = { .x = 0, .y = 0, .z = 0 };
 mat4_t proj_matrix;
@@ -66,10 +68,10 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     // load_cube_mesh_data();
-    load_obj_file_data("./assets/f117.obj");
+    load_obj_file_data("./assets/drone.obj");
 
     // Load texture information from an external PNG file
-    load_png_texture_data("./assets/f117.png");
+    load_png_texture_data("./assets/drone.png");
 }
 
 //
@@ -179,15 +181,15 @@ void update(void) {
     
     previous_frame_time = SDL_GetTicks();
 
-    // Initialise array of triangles to render
-    triangles_to_render = NULL;
+    // Initialise the counter of triangles to render for the current frame
+    num_triangles_to_render = 0;
     
 
     // Change the mesh scale, rotation & translation values per animation frame
     if (is_autorotate) {
-        mesh.rotation.x -= rotation_rate;
-        //mesh.rotation.y += 0.008;
-        //mesh.rotation.z += 0.01;
+        //mesh.rotation.x -= rotation_rate;
+        mesh.rotation.y += rotation_rate;
+        //mesh.rotation.z += rotation_rate;
     }
     mesh.translation.z = 5.0;
 
@@ -308,7 +310,8 @@ void update(void) {
         };
        
         // Save the projected triangle in the array of triangles to render
-        array_push(triangles_to_render, projected_triangle);
+        if (num_triangles_to_render < MAX_TRIANGLES_PER_MESH)
+            triangles_to_render[num_triangles_to_render++] = projected_triangle;
     }
 }
 
@@ -324,8 +327,7 @@ void render(void) {
     draw_grid();
 
     // Loop all projected triangles and render them
-    int num_triangles = array_length(triangles_to_render);
-    for (int i = 0; i < num_triangles; i++) {
+    for (int i = 0; i < num_triangles_to_render; i++) {
         triangle_t triangle = triangles_to_render[i];
         
         // Draw vertex points
@@ -371,10 +373,8 @@ void render(void) {
 
     }
     
-    // Clear the array of triangles to render
-    array_free(triangles_to_render);
-
     render_color_buffer();
+
     clear_color_buffer(0xFF000000);
     clear_z_buffer();
 
