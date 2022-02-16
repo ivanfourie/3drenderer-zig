@@ -24,6 +24,7 @@
 //
 bool is_running = false;
 int previous_frame_time = 0;
+float delta_time = 0;
 bool is_autorotate = true;
 float rotation_rate = 0.05;
 float rotation_increment = 0.01;
@@ -183,6 +184,9 @@ void update(void) {
         SDL_Delay(time_to_wait);
     }
     
+    // Get a delta time factor converted to seconds to be used to update objects
+    delta_time = (SDL_GetTicks() - previous_frame_time) / 1000.00;
+
     previous_frame_time = SDL_GetTicks();
 
     // Initialise the counter of triangles to render for the current frame
@@ -191,16 +195,16 @@ void update(void) {
 
     // Change the mesh scale, rotation & translation values per animation frame
     if (is_autorotate) {
-        //mesh.rotation.x -= rotation_rate;
-        //mesh.rotation.y += rotation_rate;
-        //mesh.rotation.z += rotation_rate;
+        mesh.rotation.x -= rotation_rate * delta_time;
+        mesh.rotation.y += rotation_rate * delta_time;
+        mesh.rotation.z += rotation_rate * delta_time;
     }
     mesh.translation.z = 4.0;
 
 
     //  Change camera position per animation frame
-    camera.position.x += 0.008;
-    camera.position.y += 0.008;
+    camera.position.x += 0.008 * delta_time;
+    camera.position.y += 0.008 * delta_time;
 
     // Create the view matrix looking at hardcoded traget point
     vec3_t target = { 0, 0, 4.0 };
