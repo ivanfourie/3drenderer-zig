@@ -62,8 +62,12 @@ To fast compile and execute directly in memory (requires `tcc`)
 * `6`: Show textured triangles with a wireframe
 * `c`: Toggle back-face culling
 * `r`: Toggle automatic rotation
-* `Up`: Rotate up (x-axis)
-* `Down`: Rotate down (x-axis)
+* `Up`: Move camera up
+* `Down`: Move camera down
+* `w`: Move camera forward 
+* `s`: Move camera backward
+* `a`: Yaw camera to the left
+* `d`: Yaw camera to the right
 * `Left`: Rotate left (y-axis)
 * `Right`: Rotate right (y-axis)
 * `.`: Increase rotation rate
