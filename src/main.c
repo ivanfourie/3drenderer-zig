@@ -13,7 +13,7 @@
 #include "triangle.h"
 #include "texture.h"
 #include "mesh.h"
-
+#include "clipping.h"
 
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
@@ -67,9 +67,12 @@ void setup(void) {
     // Inititialize the perspective projection matrix
     float fov = M_PI / 3.0; // in radians - the same as 180 / 3 or 60 degrees
     float aspect = (float) window_height / window_width;
-    float znear = 0.1;
-    float zfar = 100.0;
-    proj_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
+    float z_near = 0.1;
+    float z_far = 100.0;
+    proj_matrix = mat4_make_perspective(fov, aspect, z_near, z_far);
+
+    // Initialize frustum planes with a point and a normal
+    init_frustum_planes(fov, z_near, z_far);
 
     // Loads the cube values in the mesh data structure
     // load_cube_mesh_data();
