@@ -25,7 +25,7 @@
 bool is_running = false;
 int previous_frame_time = 0;
 float delta_time = 0;
-bool is_autorotate = false;
+bool is_autorotate = true;
 float rotation_rate = 0.05;
 float rotation_increment = 0.01;
 
@@ -76,10 +76,10 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     // load_cube_mesh_data();
-    load_obj_file_data("./assets/efa.obj");
+    load_obj_file_data("./assets/crab.obj");
 
     // Load texture information from an external PNG file
-    load_png_texture_data("./assets/efa.png");
+    load_png_texture_data("./assets/crab.png");
 }
 
 //
