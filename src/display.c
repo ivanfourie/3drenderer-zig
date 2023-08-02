@@ -1,5 +1,6 @@
 #include "display.h"
-
+enum cull_method cull_method;
+enum render_method render_method;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 int window_width = 800;
