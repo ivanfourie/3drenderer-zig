@@ -1,5 +1,5 @@
 # Build settings
-CC-BUILD=gcc
+CC-BUILD=zig cc
 CC-RUN=tcc
 CFLAGS=-Wall -std=c99
 LDFLAGS=-lm

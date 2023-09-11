@@ -6,7 +6,7 @@ pub fn build(b: *std.Build) void {
 
     const exe = b.addExecutable(.{
         .name = "3drenderer",
-        .root_source_file = .{ .path = "src/main.c" },
+        .root_source_file = .{ .path = "src/main.zig" },
         .target = target,
         .optimize = optimize,
     });
@@ -15,7 +15,8 @@ pub fn build(b: *std.Build) void {
     exe.linkSystemLibrary("SDL2");
     exe.linkLibC();
     // Add all the C files in src directory
-    exe.addCSourceFiles(&src_files, &.{"-Wall", "-std=c99"});
+    exe.addIncludePath(.{ .path = "src" });
+    exe.addCSourceFiles(&src_files, &.{ "-Wall", "-std=c99" });
 
     b.installArtifact(exe);
     const run_cmd = b.addRunArtifact(exe);
@@ -28,17 +29,4 @@ pub fn build(b: *std.Build) void {
     run_step.dependOn(&run_cmd.step);
 }
 
-const src_files = [_][]const u8{
-    "src/array.c",
-    "src/clipping.c",
-    "src/light.c",
-    "src/matrix.c",
-    "src/swap.c",
-    "src/triangle.c",
-    "src/vector.c",
-    "src/camera.c",
-    "src/display.c",
-    "src/mesh.c",
-    "src/texture.c",
-    "src/upng.c",
-};
+const src_files = [_][]const u8{ "src/array.c", "src/clipping.c", "src/light.c", "src/matrix.c", "src/swap.c", "src/triangle.c", "src/vector.c", "src/camera.c", "src/display.c", "src/mesh.c", "src/texture.c", "src/upng.c", "src/app.c" };

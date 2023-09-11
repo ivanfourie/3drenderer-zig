@@ -1,44 +1,14 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#define SDL_DISABLE_IMMINTRIN_H
-#include <SDL.h>
-#include "upng.h"
-#include "array.h"
-#include "display.h"
-#include "vector.h"
-#include "light.h"
-#include "matrix.h"
-#include "camera.h"
-#include "triangle.h"
-#include "texture.h"
-#include "mesh.h"
-#include "clipping.h"
+#include "app.h"
 
-#ifndef M_PI
-#define M_PI (3.14159265358979323846)
-#endif
-
-//
-// Global variables for execution status and game loop
-//
 bool is_running = false;
 int previous_frame_time = 0;
 float delta_time = 0;
 bool is_autorotate = true;
 float rotation_rate = 0.05;
 float rotation_increment = 0.01;
-
-//
-// Array of triangles that should be rendered frame by frame
-//
-#define MAX_TRIANGLES_PER_MESH 10000
 triangle_t triangles_to_render[MAX_TRIANGLES_PER_MESH];
 int num_triangles_to_render = 0;
 
-//
-// Declaration of global transformation matrices
-//
 mat4_t world_matrix;
 mat4_t proj_matrix;
 mat4_t view_matrix; 
@@ -76,10 +46,10 @@ void setup(void) {
 
     // Loads the cube values in the mesh data structure
     // load_cube_mesh_data();
-    load_obj_file_data("./assets/crab.obj");
+    load_obj_file_data("./assets/f22.obj");
 
     // Load texture information from an external PNG file
-    load_png_texture_data("./assets/crab.png");
+    load_png_texture_data("./assets/f22.png");
 }
 
 //
@@ -442,25 +412,25 @@ void free_resources(void) {
     array_free(mesh.vertices);
 }
 
-//
-// Main function
-//
-int main(int argc, char* args[]) {
+// //
+// // Main function
+// //
+// int main(int argc, char* args[]) {
     
-    // Create a SDL window
-    is_running = initialize_window();
+//     // Create a SDL window
+//     is_running = initialize_window();
 
-    setup();
+//     setup();
 
-    // Event loop
-    while (is_running) {
-        process_input();
-        update();
-        render();
-    }
+//     // Event loop
+//     while (is_running) {
+//         process_input();
+//         update();
+//         render();
+//     }
 
-    destroy_window();
-    free_resources();
+//     destroy_window();
+//     free_resources();
 
-    return 0;
-}
+//     return 0;
+// }
